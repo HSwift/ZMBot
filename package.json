@@ -1,0 +1,19 @@
+{
+  "name": "ZMBot",
+  "version": "1.0.0",
+  "description": "A Minecraft Bot That Helps You Do Some Work",
+  "main": "bot.js",
+  "repository": "git@github.com:HSwift/ZMBot.git",
+  "author": "Swift",
+  "license": "MIT",
+  "dependencies": {
+    "minecraft-data": "^2.93.0",
+    "mineflayer": "git://github.com/PrismarineJS/mineflayer.git",
+    "vec3": "^0.1.7"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
