@@ -4,14 +4,20 @@ function getCallerFile() {
   try {
     const err = new Error();
     let callerfile;
+    const orig = Error.prepareStackTrace;
 
     Error.prepareStackTrace = (_, stack) => stack;
     const currentfile = err.stack.shift().getFileName();
 
     while (err.stack.length) {
       callerfile = err.stack.shift().getFileName();
-      if (currentfile !== callerfile) return callerfile;
+      if (currentfile !== callerfile) {
+        Error.prepareStackTrace = orig;
+        return callerfile;
+      }
     }
+
+    Error.prepareStackTrace = orig;
   } catch (err) {
     return undefined;
   }
@@ -19,7 +25,7 @@ function getCallerFile() {
 }
 
 function logInfo(...args) {
-  const file = getCallerFile().match(/\/([a-z]*).js/)[1];
+  const file = getCallerFile().match(/\/([a-zA-z0-9]*).js/)[1];
   console.log(`[${file}]`, ...args);
 }
 
