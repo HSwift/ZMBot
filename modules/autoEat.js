@@ -45,9 +45,9 @@ class AutoEat {
 
   setFood(food = '') {
     const foodList = food.split(',');
-    this.food.clear();
+    this.food = [];
     for (const i of foodList) {
-      if (this.mcData.blocksByName[i]) {
+      if (this.mcData.itemsByName[i]) {
         this.food.push(i);
       }
     }
