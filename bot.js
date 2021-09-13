@@ -44,6 +44,12 @@ bot.once('inject_allowed', () => {
   bot.pathfinder.setMovements(defaultMove);
 });
 
+async function saveMemory() {
+  const readMemoryPromises = modules.map((x) => writeMemory(x));
+  await Promise.allSettled(readMemoryPromises);
+  logInfo('memory serialized');
+}
+
 async function initModule() {
   const readMemoryPromises = modules.map((x) => readMemory(x));
   await Promise.allSettled(readMemoryPromises);
@@ -51,12 +57,11 @@ async function initModule() {
     module.init && module.init();
   }
   logInfo('module initialized');
-}
-
-async function saveMemory() {
-  const readMemoryPromises = modules.map((x) => writeMemory(x));
-  await Promise.allSettled(readMemoryPromises);
-  logInfo('memory serialized');
+  process.on('SIGINT', async () => {
+    bot.quit('user abored');
+    await saveMemory();
+    process.exit(1);
+  });
 }
 
 bot.once('spawn', () => {
@@ -86,10 +91,4 @@ bot.on('chat', (username, message) => {
       module.chat(args.splice(1), target);
     }
   }
-});
-
-process.on('SIGINT', async () => {
-  bot.quit('user abored');
-  await saveMemory();
-  process.exit(1);
 });
