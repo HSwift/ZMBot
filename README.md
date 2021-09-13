@@ -74,6 +74,7 @@ node bot.js [<host>] [<port>] [<name>] [<password>]
 - `store del name` 删除名为name物品类型记录
 - `store del x y z` 删除坐标为(x,y,z)的箱子记录
 - `store locate name` 获取名为name物品的储存位置
+- `store mask x y z` 屏蔽坐标为(x,y,z)的箱子
 
 ### 路径点相关
 - `waypoint` 显示所有路径点标签

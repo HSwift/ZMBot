@@ -62,16 +62,20 @@ class StoreKeeper {
 
   chestAvailable(pos) {
     for (const i of this.unavailable) {
-      if (i[0] === pos.x && i[1] === pos.y && i[2] === pos.z) return false;
+      if (i[0] === pos.x && i[1] === pos.y && i[2] === pos.z) {
+        logInfo('chest unavailable', pos);
+        return false;
+      }
     }
     return true;
   }
 
   async scanOneChest(chestPos) {
     const chestToOpen = this.bot.blockAt(chestPos);
-    const chest = await this.bot.openChest(chestToOpen);
+    logInfo('open chest', chestPos);
+    const chest = await this.bot.openContainer(chestToOpen);
     const chestType = new Set(chest.containerItems().map((item) => item.type));
-    chest.close();
+    await chest.close();
 
     chest.containerItems().forEach((item) => this.knownTypes.add(item.name));
     chestType.forEach((itemId) => {
@@ -85,7 +89,11 @@ class StoreKeeper {
       maxDistance: 6,
       count: 100,
     });
-    this.path.push(this.bot.entity.position.toArray());
+    const currentPos = this.bot.entity.position.floor();
+    const bestPos = this.getNearestChest(currentPos);
+    if (bestPos === null || bestPos.distanceTo(currentPos) > 3) {
+      this.path.push(currentPos.toArray());
+    }
 
     for (const pos of posArray) {
       if (this.scannedChests.has(pos.toString())) continue;
@@ -98,6 +106,7 @@ class StoreKeeper {
 
   async scanAllChests(checkPoints) {
     for (const point of checkPoints) {
+      console.log(point);
       await this.bot.pathfinder.goto(
         new GoalNear(point[0], point[1], point[2], 2),
       );
@@ -108,14 +117,15 @@ class StoreKeeper {
   async rearrange() {
     const items = this.bot.inventory.items();
     const itemTypes = new Set(items.map((x) => x.type));
+    let foodIgnored = false;
 
     for (const itemId of itemTypes) {
       const itemName = this.mcData.items[itemId].name;
-      if (this.bot.foodToEat.includes(itemName)) continue;
-
       let chestPosSet = this.typesToChest.get(itemId);
       const similarItemId = this.matchSimilarTypes(itemName);
       const similarChestPosSet = this.typesToChest.get(similarItemId);
+      let givenCount;
+
       if (chestPosSet === undefined && similarChestPosSet === undefined) {
         logInfo(`unknown item type ${itemName}`);
         continue;
@@ -123,12 +133,19 @@ class StoreKeeper {
       if (chestPosSet === undefined) {
         chestPosSet = similarChestPosSet;
       }
+      if (!foodIgnored && this.bot.foodToEat.includes(itemName)) {
+        foodIgnored = true;
+        const foodCount = this.bot.inventory.count(itemId);
+        givenCount = foodCount > 64 ? foodCount - 64 : 0;
+        if (givenCount === 0) continue;
+      }
       for (const chestPos of chestPosSet) {
         const bestPos = this.getNearestChest(Vec3(chestPos));
+        if (bestPos === null) continue;
         await this.bot.pathfinder.goto(
           new GoalNear(bestPos.x, bestPos.y, bestPos.z, 2),
         );
-        const result = await this.putToChest(itemId, Vec3(chestPos));
+        const result = await this.putToChest(itemId, Vec3(chestPos), givenCount);
         if (result) break;
         logInfo(`chest ${chestPos} full`);
       }
@@ -154,10 +171,13 @@ class StoreKeeper {
     return nearestChest;
   }
 
-  async putToChest(itemId, chestPos) {
+  async putToChest(itemId, chestPos, givenCount) {
     const chestToOpen = this.bot.blockAt(chestPos);
-    const chest = await this.bot.openChest(chestToOpen);
-    const count = chest.count(itemId);
+    const chest = await this.bot.openContainer(chestToOpen);
+    let count = chest.count(itemId);
+    if (givenCount !== undefined) {
+      count = count < givenCount ? count : givenCount;
+    }
     const itemName = this.mcData.items[itemId].name;
     const depositingLog = `depositing ${itemName}(${count}) to ${chestPos} `;
     try {
@@ -196,10 +216,15 @@ class StoreKeeper {
       this.typesToChest = new Map();
       this.scannedChests = new Set();
       this.knownTypes = new Set();
-      this.path.clear();
+      this.path = [];
     } else if (args[0] === 'path') {
       logInfo('store path');
       console.log(this.path);
+    } else if (args[0] === 'mask' && args.length === 4) {
+      const chestPos = [args[1], args[2], args[3]];
+      const unavailablePos = chestPos.map((x) => parseInt(x, 10));
+      this.unavailable.push(unavailablePos);
+      logInfo('unavailable', chestPos);
     } else if (args[0] === 'sub' && args.length === 3) {
       const similarName = args[1];
       const similarId = parseInt(args[2], 10);
