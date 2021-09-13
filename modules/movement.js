@@ -16,10 +16,10 @@ class Movement {
     this.bot.on('path_update', (r) => {
       const path = r.path.map((x) => x.hash);
       const { goal } = r.context;
-      logInfo(goal.x, goal.y, goal.z, ':', path.join(' ').slice(0, 6));
+      logInfo(goal.x, goal.y, goal.z, ':', path.slice(0, 6).join(' '));
     });
     this.bot.on('goal_reached', (goal) => {
-      logInfo('reached', goal);
+      logInfo('reached', goal.x, goal.y, goal.z);
     });
   }
 
