@@ -8,6 +8,8 @@
 
 寻路使用的是[mineflayer-pathfinder](https://github.com/PrismarineJS/mineflayer-pathfinder)插件，对其中一些特性进行了修改。
 
+![ZMBot](images/screenshot.png)
+
 ## 已实现特性
 - 记录路径并回放
 - 装配武器和盔甲
