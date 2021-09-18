@@ -96,7 +96,7 @@ bot.on('error', (error) => {
 bot.on('chat', (username, message) => {
   if (username === bot.username || username === 'you') return;
   const target = bot.players[username] ? bot.players[username].entity : null;
-  console.log('[chat]', username, message);
+  console.log('[chat]', username, ':', message);
 
   if (message === 'save') {
     saveMemory();
