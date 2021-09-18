@@ -17,17 +17,17 @@ class AutoEat {
   }
 
   init() {
-    this.bot.on('physicsTick', () => {
+    this.bot.on('physicsTick', async () => {
       if (this.bot.food >= 20) return;
-      if (this.noFood) return;
       if (!this.enable) return;
       if (this.bot.pathfinder) {
         if (this.bot.pathfinder.isMining() || this.bot.pathfinder.isBuilding()) { return; }
       }
 
-      this.doEat();
-      if (this.noFood) {
-        this.bot.chat('not enough food');
+      try {
+        await this.doEat();
+      } catch (err) {
+        this.bot.chat(err.message);
       }
     });
     this.bot.foodToEat = this.food;
@@ -63,12 +63,16 @@ class AutoEat {
 
     if (choices.length === 0) {
       this.isEating = false;
-      this.noFood = true;
+      if (!this.noFood) {
+        this.noFood = true;
+        throw new Error('no food');
+      }
       return false;
     }
 
     const chosenFood = choices[0];
     logInfo('eat', chosenFood.name);
+    this.noFood = false;
 
     try {
       await this.bot.equip(chosenFood, 'hand');
@@ -84,7 +88,6 @@ class AutoEat {
 
   async chat(args, target) {
     if (args.length === 0) {
-      this.noFood = false;
       if (this.bot.food >= 20) {
         this.bot.chat('not hungry');
       } else {
