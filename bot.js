@@ -11,6 +11,8 @@ const Info = require('./modules/info');
 const Movement = require('./modules/movement');
 const Inventory = require('./modules/inventory');
 const { readMemory, writeMemory } = require('./memory');
+const repl = require('repl');
+const Workflow = require('./modules/workflow');
 
 if (process.argv.length > 6) {
   console.log('Usage : node bot.js [<host>] [<port>] [<name>] [<password>]');
@@ -35,6 +37,7 @@ modules.push(new Storage(bot));
 modules.push(new Info(bot));
 modules.push(new Movement(bot));
 modules.push(new Inventory(bot));
+modules.push(new Workflow(bot));
 
 bot.once('inject_allowed', () => {
   const mcData = minecraftData(bot.version);
@@ -60,7 +63,7 @@ async function initModule() {
   process.on('SIGINT', async () => {
     bot.quit('user abored');
     await saveMemory();
-    process.exit(1);
+    process.exit(0);
   });
 }
 
@@ -69,6 +72,22 @@ bot.once('spawn', () => {
   logInfo('ZMBot online');
   bot.chat('ZMBot已上线');
 });
+
+bot.on('blockUpdate', (oldBlock, newBlock) => {
+  if (oldBlock.position.x == 15 && oldBlock.position.y == 48 && oldBlock.position.z == 8) {
+    console.log(newBlock);
+    let tmp = async function(){
+      modules[4].loadFromStorage('3').then(() => {
+        modules[3].rearrange().then(() => {
+          bot.chat('rearrange done');
+        })
+      });
+    };
+    if (newBlock.metadata == 12) {
+      tmp();
+    }
+  }
+})
 
 bot.on('error', (error) => {
   logError(error);
@@ -81,8 +100,14 @@ bot.on('chat', (username, message) => {
 
   if (message === 'save') {
     saveMemory();
+  } else if (message === 'poweroff') {
+    saveMemory().then(() => {
+      bot.chat('Bye!');
+      bot.quit('Bot exit.');
+      process.exit(0);
+    });
+    return;
   }
-
   for (const module of modules) {
     const args = message.split(' ');
     if (module.prefix === '') {
@@ -92,3 +117,14 @@ bot.on('chat', (username, message) => {
     }
   }
 });
+
+/*
+bot.on('login', () => {
+  const r = repl.start('> ')
+  r.context.bot = bot
+
+  r.on('exit', () => {
+    bot.end()
+  })
+});
+*/
