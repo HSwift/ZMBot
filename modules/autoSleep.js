@@ -69,7 +69,7 @@ class AutoSleep {
     );
     const bedBlock = this.bot.blockAt(this.myBed);
 
-    if (!bedBlock.name.includes('bed')) {
+    if (!bedBlock.name.endsWith('_bed')) {
       this.bot.chat('my bed lost');
       this.myBed = null;
       return false;
