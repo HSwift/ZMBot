@@ -23,7 +23,7 @@ class Movement {
     });
   }
 
-  chat(args, target) {
+  async chat(args, target) {
     if (args[0] === 'come') {
       if (!target) {
         this.bot.chat("can't see you");

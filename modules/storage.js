@@ -85,19 +85,9 @@ class Storage {
       const position = Vec3(args[1], args[2], args[3]);
       this.setStorage(position, args[4]);
     } else if (args[0] === 'load') {
-      try {
-        await this.loadFromStorage(args[1]);
-      } catch (err) {
-        this.bot.chat(err.message);
-        logError(err);
-      }
+      await this.loadFromStorage(args[1]);
     } else if (args[0] === 'dump') {
-      try {
-        await this.dumpToStorage(args[1]);
-      } catch (err) {
-        this.bot.chat(err.message);
-        logError(err);
-      }
+      await this.dumpToStorage(args[1]);
     } else {
       const storagePos = this.getStorage(args[0]);
       if (storagePos === undefined) {

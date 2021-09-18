@@ -31,7 +31,7 @@ class Info {
     return this.mcData.blocksByName[item];
   }
 
-  chat(args, target) {
+  async chat(args, target) {
     const { bot } = this;
     const { health } = bot;
     const { food } = bot;

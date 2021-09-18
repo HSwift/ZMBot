@@ -60,7 +60,7 @@ async function initModule() {
   process.on('SIGINT', async () => {
     bot.quit('user abored');
     await saveMemory();
-    process.exit(1);
+    process.exit(0);
   });
 }
 
@@ -74,21 +74,30 @@ bot.on('error', (error) => {
   logError(error);
 });
 
-bot.on('chat', (username, message) => {
+bot.on('chat', async (username, message) => {
   if (username === bot.username || username === 'you') return;
   const target = bot.players[username] ? bot.players[username].entity : null;
   console.log('[chat]', username, ':', message);
 
   if (message === 'save') {
-    saveMemory();
+    await saveMemory();
+  }
+
+  if (message === 'poweroff') {
+    await saveMemory();
+    process.exit(0);
   }
 
   for (const module of modules) {
     const args = message.split(' ');
-    if (module.prefix === '') {
-      module.chat(args, target);
-    } else if (module.prefix === args[0]) {
-      module.chat(args.splice(1), target);
+    try {
+      if (module.prefix === '') {
+        await module.chat(args, target);
+      } else if (module.prefix === args[0]) {
+        await module.chat(args.splice(1), target);
+      }
+    } catch (err) {
+      bot.chat(err.message);
     }
   }
 });
