@@ -85,9 +85,10 @@ bot.on('chat', async (username, message) => {
 
   if (message === 'poweroff') {
     await saveMemory();
+    bot.chat('Bye!');
+    bot.quit('Bot exit.');
     process.exit(0);
   }
-
   for (const module of modules) {
     const args = message.split(' ');
     try {
