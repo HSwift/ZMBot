@@ -2,15 +2,8 @@ const mineflayer = require('mineflayer');
 const minecraftData = require('minecraft-data');
 const { logInfo, logError } = require('./utils');
 const { pathfinder, Movements } = require('./plugins/pathfinder/index');
-const AutoEat = require('./modules/autoEat');
-const AutoSleep = require('./modules/autoSleep');
-const WayPoint = require('./modules/wayPoint');
-const StoreKeeper = require('./modules/storeKeeper');
-const Storage = require('./modules/storage');
-const Info = require('./modules/info');
-const Movement = require('./modules/movement');
-const Inventory = require('./modules/inventory');
 const { readMemory, writeMemory } = require('./memory');
+const loader = require('./loader');
 
 if (process.argv.length > 6) {
   console.log('Usage : node bot.js [<host>] [<port>] [<name>] [<password>]');
@@ -25,16 +18,7 @@ const bot = mineflayer.createBot({
 });
 
 bot.loadPlugin(pathfinder);
-
-const modules = [];
-modules.push(new AutoEat(bot));
-modules.push(new AutoSleep(bot));
-modules.push(new WayPoint(bot));
-modules.push(new StoreKeeper(bot));
-modules.push(new Storage(bot));
-modules.push(new Info(bot));
-modules.push(new Movement(bot));
-modules.push(new Inventory(bot));
+const modules = loader(bot);
 
 bot.once('inject_allowed', () => {
   const mcData = minecraftData(bot.version);
@@ -89,7 +73,8 @@ bot.on('chat', async (username, message) => {
     bot.quit('Bot exit.');
     process.exit(0);
   }
-  for (const module of modules) {
+
+  for (const module of modules.values()) {
     const args = message.split(' ');
     try {
       if (module.prefix === '') {
