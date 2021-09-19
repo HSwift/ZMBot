@@ -23,5 +23,6 @@ module.exports = {
       allowTernary: true,
     }],
     'no-console': 0,
+    'no-underscore-dangle': 1,
   },
 };
