@@ -31,6 +31,7 @@ class Movement {
       }
       if (this.bot.pathfinder.isMoving()) {
         this.bot.chat('task running');
+        return;
       }
       const p = target.position;
       this.bot.pathfinder.setGoal(new GoalNear(p.x, p.y, p.z, 1));
