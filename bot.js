@@ -13,7 +13,7 @@ const Inventory = require('./modules/inventory');
 const { readMemory, writeMemory } = require('./memory');
 
 if (process.argv.length > 6) {
-  console.log('Usage : node bot.js [<host>] [<port>] [<name>] [<password>]');
+  console.log('Usage : node main.js [<host>] [<port>] [<name>] [<password>]');
   process.exit(1);
 }
 
@@ -102,3 +102,5 @@ bot.on('chat', async (username, message) => {
     }
   }
 });
+
+module.exports = bot

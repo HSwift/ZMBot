@@ -42,8 +42,8 @@ class Inventory {
     try {
       if (args.length === 0) {
         const items = this.bot.inventory.items();
-        this.bot.chat(items.map((x) => x.name).join(','));
-        logInfo(items.map((x) => `${x.name}[${x.slot}]:${x.count}`).join(','));
+        this.bot.chat(items.map((x) => `${x.name}*${x.count}`).join(', '));
+        logInfo(items.map((x) => `${x.name}[${x.slot}]:${x.count}`).join(', '));
       } else if (args[0] === 'toss') {
         await this.tossStack(args[1]);
       } else if (args[0] === 'equip') {
