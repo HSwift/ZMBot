@@ -19,7 +19,7 @@
 
 ## 启动
 ```
-node bot.js [<host>] [<port>] [<name>] [<password>]
+node main.js [<host>] [<port>] [<name>] [<password>]
 ```
 
 ## 指令
