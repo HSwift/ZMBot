@@ -2,7 +2,7 @@
   "name": "ZMBot",
   "version": "1.0.0",
   "description": "A Minecraft Bot That Helps You Do Some Work",
-  "main": "bot.js",
+  "main": "main.js",
   "repository": "git@github.com:HSwift/ZMBot.git",
   "author": "Swift",
   "license": "MIT",

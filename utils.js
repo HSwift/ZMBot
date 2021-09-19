@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 
+const path = require('path');
+
 function getCallerFile() {
   try {
     const err = new Error();
@@ -13,20 +15,21 @@ function getCallerFile() {
       callerfile = err.stack.shift().getFileName();
       if (currentfile !== callerfile) {
         Error.prepareStackTrace = orig;
-        return callerfile;
+        
+        let basename = path.basename(callerfile, path.extname(callerfile));
+        return [callerfile, basename];
       }
     }
 
     Error.prepareStackTrace = orig;
   } catch (err) {
-    return undefined;
+    return [undefined, undefined];
   }
-  return undefined;
+  return [undefined, undefined];
 }
 
 function logInfo(...args) {
-  const file = getCallerFile().match(/\/([a-zA-z0-9]*).js/)[1];
-  console.log(`[${file}]`, ...args);
+  console.log(`[${getCallerFile()[1]}]`, ...args);
 }
 
 function logError(...args) {
@@ -35,8 +38,7 @@ function logError(...args) {
 
 function logDebug(...args) {
   if (process.env.debug !== 1) return;
-  const file = getCallerFile().match(/\/([a-z]*).js/)[1];
-  console.log(`[${file}]`, ...args);
+  console.debug(`[${getCallerFile()[1]}]`, ...args);
 }
 
 module.exports = { logInfo, logError, logDebug };
