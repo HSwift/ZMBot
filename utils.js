@@ -15,8 +15,7 @@ function getCallerFile() {
       callerfile = err.stack.shift().getFileName();
       if (currentfile !== callerfile) {
         Error.prepareStackTrace = orig;
-        
-        let basename = path.basename(callerfile, path.extname(callerfile));
+        const basename = path.basename(callerfile, path.extname(callerfile));
         return [callerfile, basename];
       }
     }

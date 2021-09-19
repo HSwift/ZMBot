@@ -2,7 +2,7 @@
 
 while true
 do
-	node bot.js localhost 32021
+	node main.js localhost 32021
 	if [ $? == 0 ]; then
 		echo "Peacefully quit."
 		break

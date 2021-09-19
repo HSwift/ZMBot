@@ -88,4 +88,4 @@ bot.on('chat', async (username, message) => {
   }
 });
 
-module.exports = bot
+module.exports = bot;
