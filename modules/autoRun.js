@@ -1,7 +1,7 @@
 const Vec3 = require('vec3');
 const mineflayer = require('mineflayer');
 const { logInfo, logError } = require('../utils');
-const { GoalBlock, GoalNear, GoalInvert } = require('../plugins/pathfinder/index').goals;
+const { GoalBlock, GoalNear, GoalY, GoalInvert, GoalCompositeAny, GoalCompositeAll } = require('../plugins/pathfinder/index').goals;
 
 class AutoRun {
   /**
@@ -50,10 +50,46 @@ class AutoRun {
       this.enable = true;
     } else if (args[0] === 'off') {
       this.enable = false;
+    } else {
+      let goal = this.parseGoal(args);
+      if(goal)
+        this.run(goal);
     }
   }
   
   // ---
+  
+  parseGoal(args) {
+    let getInt = () => {
+      return parseInt(args.shift());
+    }
+    let getGoals = () => {
+      let goals = [];
+      for(let goal = this.parseGoal(args); args.length > 0 && goal; goal = this.parseGoal(args))
+        goals.push(goal);
+      return goals;
+    }
+    
+    // Here comes the big bois
+    let type = args.shift();
+    if(type === 'block') {
+      return new GoalBlock(getInt(), getInt(), getInt());
+    } else if(type === 'near') {
+      return new GoalNear(getInt(), getInt(), getInt(), getInt());
+    } else if(type === 'y') {
+      return new GoalY(getInt());
+    } else if(type === 'invert') {
+      return new GoalInvert(this.parseGoal(args));
+    } else if(type === 'any') {
+      return new GoalCompositeAny(getGoals());
+    } else if(type === 'all') {
+      return new GoalCompositeAll(getGoals());
+    } else if(type === 'stop') {
+      this.bot.pathfinder.stop();
+      this.bot.pathfinder.setGoal(null); // Force stop
+    }
+    return null;
+  }
   
   couldRun() {
     return this.enable
@@ -89,7 +125,8 @@ class AutoRun {
       let blockAbove = this.bot.blockAt(new Vec3(airBlock.x, airBlock.y + 1, airBlock.z));
       let blockBelow = this.bot.blockAt(new Vec3(airBlock.x, airBlock.y - 1, airBlock.z));
       if(blockAbove && (blockAbove.name === 'air' || blockAbove.name.endsWith('_air'))
-       && blockBelow && blockBelow.name !== 'water' && blockBelow.name !== 'lava') {
+        && blockBelow && blockBelow.boundingBox === 'block') {
+        console.log(blockBelow);
         goal = new GoalBlock(airBlock.x, airBlock.y, airBlock.z);
         let path = this.bot.pathfinder.getPathTo(this.bot.pathfinder.movements, goal, 1000);
         if(path.status === 'success' || path.status === 'partial')
@@ -102,9 +139,7 @@ class AutoRun {
       // Nowhere to run to. nu blyat
       this.desperateRun = true;
       this.bot.chat('AAAAAA');
-      
-      let pos = this.bot.entity.position;
-      goal = new GoalBlock(pos.x, 999, pos.z);
+      goal = new GoalY(999);
     }
     
     this.run(goal);
@@ -149,6 +184,9 @@ class AutoRun {
   }
   
   async onPathStop() {
+    // Clear the goal ASAP to prevent race condition on states
+    this.bot.pathfinder.setGoal(null);
+    
     this.running = false;
     this.desperateRun = false;
   }
