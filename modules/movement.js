@@ -1,5 +1,5 @@
 const mineflayer = require('mineflayer');
-const { GoalNear, GoalFollow } = require('../plugins/pathfinder/index').goals;
+const { GoalNear, GoalFollow, GoalInvert } = require('../plugins/pathfinder/index').goals;
 const { logInfo, logError } = require('../utils');
 
 class Movement {
@@ -16,10 +16,18 @@ class Movement {
     this.bot.on('path_update', (r) => {
       const path = r.path.map((x) => x.hash);
       const { goal } = r.context;
-      logInfo(goal.x, goal.y, goal.z, ':', path.slice(0, 6).join(' '));
+      if(goal instanceof GoalInvert) {
+        logInfo('path invert', goal.goal.x, goal.goal.y, goal.goal.z, ':', path.slice(0, 6).join(' '));
+      } else {
+        logInfo('path', goal.x, goal.y, goal.z, ':', path.slice(0, 6).join(' '));
+      }
     });
     this.bot.on('goal_reached', (goal) => {
-      logInfo('reached', goal.x, goal.y, goal.z);
+      if(goal instanceof GoalInvert) {
+        logInfo('reached invert', goal.goal.x, goal.goal.y, goal.goal.z);
+      } else {
+        logInfo('reached', goal.x, goal.y, goal.z);
+      }
     });
   }
 

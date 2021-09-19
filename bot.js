@@ -10,6 +10,7 @@ const Storage = require('./modules/storage');
 const Info = require('./modules/info');
 const Movement = require('./modules/movement');
 const Inventory = require('./modules/inventory');
+const AutoRun = require('./modules/autoRun');
 const { readMemory, writeMemory } = require('./memory');
 
 if (process.argv.length > 6) {
@@ -35,6 +36,7 @@ modules.push(new Storage(bot));
 modules.push(new Info(bot));
 modules.push(new Movement(bot));
 modules.push(new Inventory(bot));
+modules.push(new AutoRun(bot));
 
 bot.once('inject_allowed', () => {
   const mcData = minecraftData(bot.version);
