@@ -12,4 +12,4 @@ function unhandledError(err) {
 process.on('uncaughtException', unhandledError);
 process.on('unhandledRejection', unhandledError);
 
-bot = require('./bot');
+bot = require('./lib/bot');
