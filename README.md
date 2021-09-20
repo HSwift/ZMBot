@@ -94,6 +94,22 @@ node main.js [<host>] [<port>] [<name>] [<password>]
 - `run stop` 立刻停止当前寻路
 - `run [block|near|y|invert|any|all] [...]` 寻路至指定目标（参见`pathfinder`文档）
 
+### 指令木牌相关
+
+将拉杆放置在方块一侧，在拉杆正上方放置一个墙上的木牌（必须是 `wall_sign` 类）。
+
+木牌上第一行必须为 `[ZMBot]`，剩余的行就是要执行的命令。
+
+例如：
+```
+[ZMBot]
+storage load 1
+{空}
+{空}
+```
+
+放置好木牌后使用拉杆即可执行命令（默认限制频率 5 秒）。
+
 ## 开发
 
 欢迎提交PR完善机器人功能:)
