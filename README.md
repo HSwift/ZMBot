@@ -86,6 +86,14 @@ node main.js [<host>] [<port>] [<name>] [<password>]
 - `waypoint save [tag]` 保存当前路径点到tag或默认路径点
 - `waypoint clear` 清除当前路径点
 
+### 主动寻路相关
+
+- `run` 触发一次主动寻路
+- `run on` 启用主动寻路
+- `run off` 禁用主动寻路
+- `run stop` 立刻停止当前寻路
+- `run [block|near|y|invert|any|all] [...]` 寻路至指定目标（参见`pathfinder`文档）
+
 ## 开发
 
 欢迎提交PR完善机器人功能:)
