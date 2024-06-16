@@ -1,5 +1,113 @@
 # History
 
+# 2.4.5
+* [Fix block update resets for optimized paths (@m000z0rz)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/330)
+* [reword .stop() for more clarity (@Jovan-04)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/327)
+* [add more detailed tutorial for mineflayer-pathfinder goals (@Jovan-04)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/326)
+* [Fixed typo: "physicsTick" (@FreezeEngine)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/324)
+
+# 2.4.4
+* [Update readme.md (@Vinciepincie)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/320)
+* Fix file linting (@IceTank)
+* Fix possible reference error for block updates (@IceTank)
+* [Fix a bunch of spelling/grammar errors (@182exe)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/316)
+
+# 2.4.3
+* [Change canOpenDoors default value to false because its buggy (@IceTank)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/318)
+* [Added missing constructor definitions for GoalCompositeAny and GoalCompositeAll (@rutexd)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/315)
+* [Added "sneak" on interact blocks to avoid open it (@sefirosweb)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/314)
+* [Block face position fix (@WhoTho)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/312)
+* [Remove mcData param in movements.js (@rtm516)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/311)
+
+# 2.4.2
+* Fix pathfinder trying to make a parkour jump that fails most times
+* Fix pathfinder not going below level 0
+* [Fix wheat not being break able (@maximmasiutin)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/303)
+* [Add parameter typing to Composite goals (@Ic3Tank)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/302)
+* [Fix GoalLookAtBlock documentation (@Ic3Tank)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/301)
+
+# 2.4.1
+* [Made some Goal methods none abstract (@IceTank)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/298)
+
+# 2.4.0
+* [mcData to registry refactoring (@Epirito)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/293)
+
+# 2.3.3
+* [Add missing types on GoalPlaceBlock and GoalLookAtBlock (@IceTank)](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/289)
+
+# 2.3.2
+* Revert broken goto implementation update.
+
+# 2.3.1
+* Fix reference error in `getNumEntitiesAt` (https://github.com/PrismarineJS/mineflayer-pathfinder/commit/2e7b3daff2ee5fa0aaf52db4553f769189b8d03f)
+
+# 2.3.0
+* [Add entity Avoidance Feature](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/281)
+* [Fix bugs in movements.js](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/276)
+* [Update Dependencies](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/277)
+* [Fix issue with starting paths](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/280)
+
+# 2.2.0
+* [Add events typings](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/266)
+* [Force look at blocks when breaking them](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/274)
+* [Fix bot sometimes not triggering path end correctly](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/268)
+* [Fix missing null check at block update](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/269)
+* [Bump mocha to 10.x](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/265)
+
+# 2.1.1
+* Fix GitHub action for publishing
+
+# 2.1.0
+* [Add automated tests](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/262)
+* [Add getPathFromTo function](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/255)
+* [Fix path optimization check](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/254)
+* [Bumb minecraft data to version 3.x](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/262)
+* [Add goal chaining example](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/256)
+
+# 2.0.0
+* [Remove callbacks](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/248)
+* [Export GoalLookAtBlock and deprecate GoalBreakBlock](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/249)
+
+# 1.10.0
+
+* [Add exclusion area mechanism](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/220)
+* [Add movement class example](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/247)
+* [Add infiniteLiquidDropdownDistance to movements](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/211)
+* [Added dontMineUnderFallingBlock to movements](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/239/files)
+* [Add ability to open fence gates](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/217)
+
+* [Bump mineflayer to 4.0.0](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/245)
+* [Throw error in goto when stop() is called](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/240)
+* [Update README.md](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/246)
+
+* Typing fixes:
+  * [tickTimeout](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/241)
+  * [GoalLookAtBlock](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/238)
+
+* [Fix dynamic goals with entities](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/206)
+* [Fix default scaffolding blocks](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/243)
+* [Fix event handler when stop() is called](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/184)
+
+# 1.9.1
+
+* [Fixed unhandled promise rejection introduced in 1.0.0](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/235#event-5854609665)
+
+# 1.9.0
+
+* [Fixed floor check](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/208)
+* [Avoid cobwebs](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/210)
+* [Fixed diagonal move not considering collision height when jumping up diagonally](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/216)
+* [Fixed movements for older versions](https://github.com/PrismarineJS/mineflayer-pathfinder/pull/226)
+
+# 1.8.0
+
+* Fixed placeBlock example
+* Fixed Readme typos
+* Fixed bot placing wrong blocks as scaffolding
+* Fixed GoalNearXZ
+* Fixed typings
+* Fixed index.d.ts compile errors
+
 # 1.7.0
 
 * Add GoalNearXZ
