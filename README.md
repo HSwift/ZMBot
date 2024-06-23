@@ -63,6 +63,7 @@ node main.js [<host>] [<port>] [<name>] [<password>]
 - `storage set x y z [tag]` 设置指定tag或默认储物箱位置
 - `storage load [tag]` 将指定tag或默认储物箱中的物品放入物品栏
 - `storage dump [tag]` 将物品栏中的物品放入指定tag或默认储物箱
+- `storage myhand` 获取触发此命令的玩家手中持有的物品名称和ID
 
 ### 物品整理相关
 - `store scanAll` 使用名为store的路径点扫描所有箱子记录物品类型
