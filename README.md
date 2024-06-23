@@ -73,6 +73,7 @@ node main.js [<host>] [<port>] [<name>] [<password>]
 - `store path` 输出整理箱子所用的路径点
 - `store sub similarName similarId` 设置相似物品名similarName使用similarId进行分类
 - `store set name x y z` 将名为name的物品储存在坐标为(x,y,z)的箱子中
+- `store sethand x y z` 将玩家手中所持有的物品储存在坐标为(x,y,z)的箱子中
 - `store del name` 删除名为name物品类型记录
 - `store del x y z` 删除坐标为(x,y,z)的箱子记录
 - `store locate name` 获取名为name物品的储存位置
